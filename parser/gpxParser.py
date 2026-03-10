@@ -2,6 +2,9 @@
 This file has all of the code necessary for parsing gpx files and retrieving data.
 """
 
+# data to get:
+# date, distance, duration, elevation_gain, avg_pace
+
 import gpxpy
 import gpxpy.gpx
 
@@ -43,8 +46,14 @@ def getDuration(gpxdata):
     :return: The duration of the run as a datetime object
     """
 
-    start_time, end_time = gpx.get_time_bounds()
+    start_time, end_time = gpxdata.get_time_bounds()
     return (end_time - start_time)
+
+def getDistance(gpxdata):
+    """
+
+    """
+    for 
 
 
 

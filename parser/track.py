@@ -104,3 +104,19 @@ class Track:
         smooth = np.convolve(padded, kernel, mode="valid")
 
         return smooth
+    
+    def save_track(self, file_path):
+
+        """
+        saves the information of the track a npz file.
+
+        Saves the latitude, longitude, elevation, time, and cumulative_distance arrays to a file.
+        """
+        np.savez(
+            file_path,
+            lat=self.lat,
+            lon=self.lon,
+            elev=self.elev,
+            time=self.time,
+            dist=self.cumulative_distance
+        )

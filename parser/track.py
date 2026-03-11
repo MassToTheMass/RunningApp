@@ -31,9 +31,8 @@ class Track:
         
         self.duration = self._computeDuration(gpxdata)
         self.total_distance = self.cumulative_distance[-1]
-        self.avg_pace = self._computeAveragePace()
-        self.ascent = self._computeAscent()
-        self.descent = self._computeDescent()
+        self.avg_pace = self._computeAverageSpeed()
+        self.ascent, self.descent = self._computeAscentDescent()
 
         print(self.ascent, self.descent)
 
@@ -53,7 +52,7 @@ class Track:
         start_time, end_time = gpxdata.get_time_bounds()
         return (end_time - start_time)
 
-    def _computeAveragePace(self):
+    def _computeAverageSpeed(self):
 
         """
         Calculates the speed in meters per second to store on the backend
@@ -68,32 +67,6 @@ class Track:
         meters_per_second = self.total_distance / total_seconds
 
         return meters_per_second
-    
-    def _computeAscent(self):
-
-        """
-        Calculates the ascent in meters
-
-        :return: The ascent of the activity
-        """
-
-        elevation_delta = np.diff(self._smoothElevation())
-
-        ascent = np.sum(np.maximum(elevation_delta, 0))
-        return ascent
-    
-    def _computeDescent(self):
-
-        """
-        Calculates the descent in meters
-
-        :return: The descent of the activity
-        """
-
-        elevation_delta = np.diff(self._smoothElevation())
-
-        descent = np.sum(np.maximum(-elevation_delta, 0))
-        return descent
     
     def _computeAscentDescent(self):
         """

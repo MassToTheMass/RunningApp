@@ -12,7 +12,7 @@ def createRunTable():
 		- elevation_gain: The total elevation gain during the run (real)
 	"""
 
-	connection = sql.connect("trackData.db")
+	connection = sql.connect("parser/trackData.db")
 	cursor = connection.cursor()
 	cursor.execute('''
 	CREATE TABLE IF NOT EXISTS Runs
@@ -31,7 +31,7 @@ def createRunTable():
 
 def insertData(track):
 
-	connection = sql.connect("trackData.db")
+	connection = sql.connect("parser/trackData.db")
 	cursor = connection.cursor()
 
 	cursor.execute('''
@@ -45,7 +45,7 @@ def insertData(track):
 
 def queryData():
 
-	connection = sql.connect("trackData.db")
+	connection = sql.connect("parser/trackData.db")
 	cursor = connection.cursor()
 
 	cursor.execute('SELECT * FROM Runs')
@@ -54,3 +54,5 @@ def queryData():
 	connection.close()
 
 	return rows
+
+createRunTable()

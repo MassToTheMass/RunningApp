@@ -1,5 +1,4 @@
 import numpy as np
-import sqlite3 as sql
 
 class Track:
     def __init__(self, gpxdata):
@@ -121,11 +120,3 @@ class Track:
             time=self.time,
             dist=self.cumulative_distance
         )
-
-        connection = sql.connect("track_data.db")
-        cursor = connection.cursor()
-
-        cursor.execute()
-
-        connection.commit()
-        cursor.close()

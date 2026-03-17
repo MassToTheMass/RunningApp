@@ -1,6 +1,6 @@
 import sqlite3 as sql
 
-def createRunTable():
+def createRunTable(database_file="runsData.db"):
 
 	"""
 	Creates a table in the database to store run data. The table includes columns for:
@@ -12,7 +12,7 @@ def createRunTable():
 		- elevation_gain: The total elevation gain during the run (real)
 	"""
 
-	connection = sql.connect("parser/trackData.db")
+	connection = sql.connect(database_file)
 	cursor = connection.cursor()
 	cursor.execute('''
 	CREATE TABLE IF NOT EXISTS Runs
@@ -29,7 +29,7 @@ def createRunTable():
 	connection.close()
 
 
-def insertData(track):
+def insertData(track, database_file="runsData.db"):
 
 	"""
 	Inserts a new run into the Runs table in the database. The function takes a track object as input and extracts the relevant data to be stored in the database. The data includes:
@@ -39,9 +39,10 @@ def insertData(track):
 		- avg_pace: The average pace of the run
 		- elevation_gain: The total elevation gain during the run
 	:param track: A track object containing the data to be inserted into the database
+	:param database_file: The path to the database file (default is "runsData.db")
 	"""
 
-	connection = sql.connect("parser/trackData.db")
+	connection = sql.connect(database_file)
 	cursor = connection.cursor()
 
 	cursor.execute('''
@@ -52,14 +53,15 @@ def insertData(track):
 	connection.commit()
 	connection.close()
 
-def deleteData(run_id):
+def deleteData(run_id, database_file="runsData.db"):
 
 	"""
 	Deletes a run from the Runs table in the database based on its ID.
 	:param run_id: The ID of the run to be deleted
+	:param database_file: The path to the database file (default is "runsData.db")
 	"""
 
-	connection = sql.connect("parser/trackData.db")
+	connection = sql.connect(database_file)
 	cursor = connection.cursor()
 
 	cursor.execute('DELETE FROM Runs WHERE id = ?', (run_id,))
@@ -67,12 +69,14 @@ def deleteData(run_id):
 	connection.commit()
 	connection.close()
 
-def clearTable():
+def clearTable(database_file="runsData.db"):
 	"""
 	Deletes all runs from the Runs table in the database. This function is useful for testing purposes to ensure a clean state before running tests.
+
+	:param database_file: The path to the database file (default is "runsData.db")
 	"""
 
-	connection = sql.connect("parser/trackData.db")
+	connection = sql.connect(database_file)
 	cursor = connection.cursor()
 
 	cursor.execute('DELETE FROM Runs')
@@ -81,7 +85,7 @@ def clearTable():
 	connection.close()
 
 
-def queryData():
+def queryData(database_file="runsData.db"):
 
 	"""
 	Queries all runs from the Runs table in the database and returns them as a list of tuples. Each tuple contains the data for a single run, including:
@@ -91,9 +95,12 @@ def queryData():
 		- duration: The duration of the run in seconds
 		- avg_pace: The average pace of the run
 		- elevation_gain: The total elevation gain during the run
+
+	:param database_file: The path to the database file (default is "runsData.db")
+	:return: A list of tuples, where each tuple contains the data for a single run
 	"""
 
-	connection = sql.connect("parser/trackData.db")
+	connection = sql.connect(database_file)
 	cursor = connection.cursor()
 
 	cursor.execute('SELECT * FROM Runs')

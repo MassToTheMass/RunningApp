@@ -7,7 +7,7 @@ class TestDatabaseFunctions(unittest.TestCase):
 
 	def test_clearTableFunction_success(self):
 
-		databaseCommands.clearTable()
+		databaseCommands.clearTable("parser/trackDataTest.db")
 
 		track = SimpleNamespace()
 		track.date = "2024-06-01"
@@ -16,19 +16,19 @@ class TestDatabaseFunctions(unittest.TestCase):
 		track.avg_pace = 6.0
 		track.elevation_gain = 50.0
 
-		databaseCommands.insertData(track)
-		run_data = databaseCommands.queryData()
+		databaseCommands.insertData(track, "parser/trackDataTest.db")
+		run_data = databaseCommands.queryData("parser/trackDataTest.db")
 		assert len(run_data) == 1  # Ensure there is one run in the database
 
-		databaseCommands.clearTable()
-		run_data_after_clear = databaseCommands.queryData()
+		databaseCommands.clearTable("parser/trackDataTest.db")
+		run_data_after_clear = databaseCommands.queryData("parser/trackDataTest.db")
 		assert len(run_data_after_clear) == 0  # Ensure the table is empty after
 
 
 
 	def test_insertDataFunction_success(self):
 
-		databaseCommands.clearTable()
+		databaseCommands.clearTable("parser/trackDataTest.db")
         
 		track = SimpleNamespace()
 		track.date = "2024-06-01"
@@ -37,10 +37,10 @@ class TestDatabaseFunctions(unittest.TestCase):
 		track.avg_pace = 6.0
 		track.elevation_gain = 50.0
 
-		databaseCommands.insertData(track)
+		databaseCommands.insertData(track, "parser/trackDataTest.db")
 
 		# Query the run back from the database
-		run_data = databaseCommands.queryData()
+		run_data = databaseCommands.queryData("parser/trackDataTest.db")
 
 		# Assert that the data matches what was inserted
 		assert run_data[0][1] == "2024-06-01"
@@ -51,7 +51,7 @@ class TestDatabaseFunctions(unittest.TestCase):
 
 	def test_deleteDataFunction_success(self):
 		
-		databaseCommands.clearTable()
+		databaseCommands.clearTable("parser/trackDataTest.db")
 
 		# First, insert a run to ensure there is something to delete
 		track = SimpleNamespace()
@@ -61,17 +61,16 @@ class TestDatabaseFunctions(unittest.TestCase):
 		track.avg_pace = 6.0
 		track.elevation_gain = 50.0
 
-		databaseCommands.insertData(track)
+		databaseCommands.insertData(track, "parser/trackDataTest.db")
 
 		# Query the run back from the database to get its ID
-		run_data = databaseCommands.queryData()
-		print(run_data)
+		run_data = databaseCommands.queryData("parser/trackDataTest.db")
 		assert len(run_data) == 1  # Ensure there is one run in the database
 
 		run_id = run_data[0][0]
 
-		databaseCommands.deleteData(run_id)
+		databaseCommands.deleteData(run_id, "parser/trackDataTest.db")
 
 		# Query the database again to ensure the run was deleted
-		run_data_after_delete = databaseCommands.queryData()
+		run_data_after_delete = databaseCommands.queryData("parser/trackDataTest.db")
 		assert len(run_data_after_delete) == 0

@@ -54,5 +54,3 @@ def queryData():
 	connection.close()
 
 	return rows
-
-createRunTable()

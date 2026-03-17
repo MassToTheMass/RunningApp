@@ -31,6 +31,16 @@ def createRunTable():
 
 def insertData(track):
 
+	"""
+	Inserts a new run into the Runs table in the database. The function takes a track object as input and extracts the relevant data to be stored in the database. The data includes:
+		- date: The date of the run
+		- distance: The total distance of the run
+		- duration: The duration of the run in seconds
+		- avg_pace: The average pace of the run
+		- elevation_gain: The total elevation gain during the run
+	:param track: A track object containing the data to be inserted into the database
+	"""
+
 	connection = sql.connect("parser/trackData.db")
 	cursor = connection.cursor()
 
@@ -42,8 +52,46 @@ def insertData(track):
 	connection.commit()
 	connection.close()
 
+def deleteData(run_id):
+
+	"""
+	Deletes a run from the Runs table in the database based on its ID.
+	:param run_id: The ID of the run to be deleted
+	"""
+
+	connection = sql.connect("parser/trackData.db")
+	cursor = connection.cursor()
+
+	cursor.execute('DELETE FROM Runs WHERE id = ?', (run_id,))
+
+	connection.commit()
+	connection.close()
+
+def clearTable():
+	"""
+	Deletes all runs from the Runs table in the database. This function is useful for testing purposes to ensure a clean state before running tests.
+	"""
+
+	connection = sql.connect("parser/trackData.db")
+	cursor = connection.cursor()
+
+	cursor.execute('DELETE FROM Runs')
+
+	connection.commit()
+	connection.close()
+
 
 def queryData():
+
+	"""
+	Queries all runs from the Runs table in the database and returns them as a list of tuples. Each tuple contains the data for a single run, including:
+		- id: The unique identifier for the run
+		- date: The date of the run
+		- distance: The total distance of the run
+		- duration: The duration of the run in seconds
+		- avg_pace: The average pace of the run
+		- elevation_gain: The total elevation gain during the run
+	"""
 
 	connection = sql.connect("parser/trackData.db")
 	cursor = connection.cursor()

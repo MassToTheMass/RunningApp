@@ -5,7 +5,30 @@ import unittest
 
 class TestDatabaseFunctions(unittest.TestCase):
 
+	def test_clearTableFunction_success(self):
+
+		databaseCommands.clearTable()
+
+		track = SimpleNamespace()
+		track.date = "2024-06-01"
+		track.distance = 5.0
+		track.duration = 30.0
+		track.avg_pace = 6.0
+		track.elevation_gain = 50.0
+
+		databaseCommands.insertData(track)
+		run_data = databaseCommands.queryData()
+		assert len(run_data) == 1  # Ensure there is one run in the database
+
+		databaseCommands.clearTable()
+		run_data_after_clear = databaseCommands.queryData()
+		assert len(run_data_after_clear) == 0  # Ensure the table is empty after
+
+
+
 	def test_insertDataFunction_success(self):
+
+		databaseCommands.clearTable()
         
 		track = SimpleNamespace()
 		track.date = "2024-06-01"
@@ -25,3 +48,30 @@ class TestDatabaseFunctions(unittest.TestCase):
 		assert run_data[0][3] == 30.0
 		assert run_data[0][4] == 6.0
 		assert run_data[0][5] == 50.0
+
+	def test_deleteDataFunction_success(self):
+		
+		databaseCommands.clearTable()
+
+		# First, insert a run to ensure there is something to delete
+		track = SimpleNamespace()
+		track.date = "2024-06-01"
+		track.distance = 5.0
+		track.duration = 30.0
+		track.avg_pace = 6.0
+		track.elevation_gain = 50.0
+
+		databaseCommands.insertData(track)
+
+		# Query the run back from the database to get its ID
+		run_data = databaseCommands.queryData()
+		print(run_data)
+		assert len(run_data) == 1  # Ensure there is one run in the database
+
+		run_id = run_data[0][0]
+
+		databaseCommands.deleteData(run_id)
+
+		# Query the database again to ensure the run was deleted
+		run_data_after_delete = databaseCommands.queryData()
+		assert len(run_data_after_delete) == 0

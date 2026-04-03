@@ -1,13 +1,14 @@
-from parser import databaseCommands
+from backEnd.parser import databaseCommands
 from types import SimpleNamespace
 import unittest
 
+# The following tests for databases are going to use a test database in order to not modify any of the actual data in the database.
 
 class TestDatabaseFunctions(unittest.TestCase):
 
 	def test_clearTableFunction_success(self):
 
-		databaseCommands.clearTable("parser/trackDataTest.db")
+		databaseCommands.clearTable("backEnd/parser/trackDataTest.db")
 
 		track = SimpleNamespace()
 		track.date = "2024-06-01"
@@ -16,19 +17,19 @@ class TestDatabaseFunctions(unittest.TestCase):
 		track.avg_pace = 6.0
 		track.elevation_gain = 50.0
 
-		databaseCommands.insertData(track, "parser/trackDataTest.db")
-		run_data = databaseCommands.queryData("parser/trackDataTest.db")
+		databaseCommands.insertData(track, "backEnd/parser/trackDataTest.db")
+		run_data = databaseCommands.queryData("backEnd/parser/trackDataTest.db")
 		assert len(run_data) == 1  # Ensure there is one run in the database
 
-		databaseCommands.clearTable("parser/trackDataTest.db")
-		run_data_after_clear = databaseCommands.queryData("parser/trackDataTest.db")
+		databaseCommands.clearTable("backEnd/parser/trackDataTest.db")
+		run_data_after_clear = databaseCommands.queryData("backEnd/parser/trackDataTest.db")
 		assert len(run_data_after_clear) == 0  # Ensure the table is empty after
 
 
 
 	def test_insertDataFunction_success(self):
 
-		databaseCommands.clearTable("parser/trackDataTest.db")
+		databaseCommands.clearTable("backEnd/parser/trackDataTest.db")
         
 		track = SimpleNamespace()
 		track.date = "2024-06-01"
@@ -37,10 +38,10 @@ class TestDatabaseFunctions(unittest.TestCase):
 		track.avg_pace = 6.0
 		track.elevation_gain = 50.0
 
-		databaseCommands.insertData(track, "parser/trackDataTest.db")
+		databaseCommands.insertData(track, "backEnd/parser/trackDataTest.db")
 
 		# Query the run back from the database
-		run_data = databaseCommands.queryData("parser/trackDataTest.db")
+		run_data = databaseCommands.queryData("backEnd/parser/trackDataTest.db")
 
 		# Assert that the data matches what was inserted
 		assert run_data[0][1] == "2024-06-01"
@@ -51,7 +52,7 @@ class TestDatabaseFunctions(unittest.TestCase):
 
 	def test_deleteDataFunction_success(self):
 		
-		databaseCommands.clearTable("parser/trackDataTest.db")
+		databaseCommands.clearTable("backEnd/parser/trackDataTest.db")
 
 		# First, insert a run to ensure there is something to delete
 		track = SimpleNamespace()
@@ -61,16 +62,16 @@ class TestDatabaseFunctions(unittest.TestCase):
 		track.avg_pace = 6.0
 		track.elevation_gain = 50.0
 
-		databaseCommands.insertData(track, "parser/trackDataTest.db")
+		databaseCommands.insertData(track, "backEnd/parser/trackDataTest.db")
 
 		# Query the run back from the database to get its ID
-		run_data = databaseCommands.queryData("parser/trackDataTest.db")
+		run_data = databaseCommands.queryData("backEnd/parser/trackDataTest.db")
 		assert len(run_data) == 1  # Ensure there is one run in the database
 
 		run_id = run_data[0][0]
 
-		databaseCommands.deleteData(run_id, "parser/trackDataTest.db")
+		databaseCommands.deleteData(run_id, "backEnd/parser/trackDataTest.db")
 
 		# Query the database again to ensure the run was deleted
-		run_data_after_delete = databaseCommands.queryData("parser/trackDataTest.db")
+		run_data_after_delete = databaseCommands.queryData("backEnd/parser/trackDataTest.db")
 		assert len(run_data_after_delete) == 0

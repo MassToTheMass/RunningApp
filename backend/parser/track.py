@@ -1,7 +1,17 @@
 import numpy as np
+import gpxpy
+import gpxpy.gpx
+
+import parser.databaseCommands as db
 
 class Track:
-    def __init__(self, gpxdata):
+    def __init__(self, file_path):
+
+        self.file_path = file_path
+
+        with open(file_path) as gpx_file:
+            gpxdata = gpxpy.parse(gpx_file)
+
         lat = []
         lon = []
         elev = []
@@ -29,6 +39,7 @@ class Track:
         self.time = np.array(time)
         self.cumulative_distance = np.array(cumulative_distance)
         
+        self.date = self.time[0].date()
         self.duration = self._computeDuration(gpxdata)
         self.total_distance = self.cumulative_distance[-1]
         self.avg_pace = self._computeAverageSpeed()
@@ -103,18 +114,6 @@ class Track:
 
         return smooth
     
-    def save_track(self, file_path):
+    def save_track(self):
 
-        """
-        saves the information of the track a npz file.
-
-        Saves the latitude, longitude, elevation, time, and cumulative_distance arrays to a file.
-        """
-        np.savez(
-            file_path,
-            lat=self.lat,
-            lon=self.lon,
-            elev=self.elev,
-            time=self.time,
-            dist=self.cumulative_distance
-        )
+        db.insertData(self, database_file="trackDataTest.db")

@@ -6,10 +6,10 @@ def createRunTable(database_file="runsData.db"):
 	Creates a table in the database to store run data. The table includes columns for:
 		- id: A unique identifier for each run (primary key, auto-incremented)
 		- date: The date of the run (text, not null)
-		- distance: The total distance of the run (real)
+		- total_distance: The total distance of the run (real)
 		- duration: The duration of the run in seconds (integer)
 		- avg_pace: The average pace of the run (real)
-		- elevation_gain: The total elevation gain during the run (real)
+		- ascent: The total ascent during the run (real)
 	"""
 
 	connection = sql.connect(database_file)
@@ -18,10 +18,11 @@ def createRunTable(database_file="runsData.db"):
 	CREATE TABLE IF NOT EXISTS Runs
 			(id INTEGER PRIMARY KEY AUTOINCREMENT, -- Run ID
 			date TEXT NOT NULL,					   -- Date of the run
-			distance REAL,						   -- Total distance in TODO: add units
+			total_distance REAL,				   -- Total distance in TODO: add units
 			duration INTEGER,					   -- Duration in seconds
 			avg_pace REAL,						   -- Average pace in TODO: add units
-			elevation_gain REAL					   -- Total elevation gain in TODO: add units
+			ascent REAL							   -- Total ascent in TODO: add units
+			file_path TEXT NOT NULL				   -- File path of the original GPX file
 	)
 	''')
 
@@ -34,10 +35,10 @@ def insertData(track, database_file="runsData.db"):
 	"""
 	Inserts a new run into the Runs table in the database. The function takes a track object as input and extracts the relevant data to be stored in the database. The data includes:
 		- date: The date of the run
-		- distance: The total distance of the run
+		- total_distance: The total distance of the run
 		- duration: The duration of the run in seconds
 		- avg_pace: The average pace of the run
-		- elevation_gain: The total elevation gain during the run
+		- ascent: The total ascent during the run
 	:param track: A track object containing the data to be inserted into the database
 	:param database_file: The path to the database file (default is "runsData.db")
 	"""
@@ -46,9 +47,9 @@ def insertData(track, database_file="runsData.db"):
 	cursor = connection.cursor()
 
 	cursor.execute('''
-	INSERT INTO Runs (date, distance, duration, avg_pace, elevation_gain)
-	VALUES (?, ?, ?, ?, ?)
-	''', (track.date, track.distance, track.duration, track.avg_pace, track.elevation_gain))
+	INSERT INTO Runs (date, total_distance, duration, avg_pace, ascent, file_path)
+	VALUES (?, ?, ?, ?, ?, ?)
+	''', (track.date, track.total_distance, track.duration, track.avg_pace, track.ascent, track.file_path))
 
 	connection.commit()
 	connection.close()
@@ -91,10 +92,10 @@ def queryData(database_file="runsData.db"):
 	Queries all runs from the Runs table in the database and returns them as a list of tuples. Each tuple contains the data for a single run, including:
 		- id: The unique identifier for the run
 		- date: The date of the run
-		- distance: The total distance of the run
+		- total_distance: The total distance of the run
 		- duration: The duration of the run in seconds
 		- avg_pace: The average pace of the run
-		- elevation_gain: The total elevation gain during the run
+		- ascent: The total ascent during the run
 
 	:param database_file: The path to the database file (default is "runsData.db")
 	:return: A list of tuples, where each tuple contains the data for a single run

@@ -21,6 +21,7 @@ def upload_file():
 
     activity = Track(filepath)
     
+    db.resetTable(database_file="trackDataTest.db")
     db.createRunTable("trackDataTest.db")
     activity.save_track()
 

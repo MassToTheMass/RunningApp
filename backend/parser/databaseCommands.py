@@ -21,8 +21,8 @@ def createRunTable(database_file="runsData.db"):
 			total_distance REAL,				   -- Total distance in TODO: add units
 			duration INTEGER,					   -- Duration in seconds
 			avg_pace REAL,						   -- Average pace in TODO: add units
-			ascent REAL							   -- Total ascent in TODO: add units
-			file_path TEXT NOT NULL				   -- File path of the original GPX file
+			ascent REAL,						   -- Total ascent in TODO: add units
+			file_path TEXT NOT NULL			   	   -- File path of the original GPX file
 	)
 	''')
 
@@ -39,6 +39,7 @@ def insertData(track, database_file="runsData.db"):
 		- duration: The duration of the run in seconds
 		- avg_pace: The average pace of the run
 		- ascent: The total ascent during the run
+		- file_path: The file path of the original GPX file
 	:param track: A track object containing the data to be inserted into the database
 	:param database_file: The path to the database file (default is "runsData.db")
 	"""
@@ -85,7 +86,6 @@ def clearTable(database_file="runsData.db"):
 	connection.commit()
 	connection.close()
 
-
 def queryData(database_file="runsData.db"):
 
 	"""
@@ -96,6 +96,7 @@ def queryData(database_file="runsData.db"):
 		- duration: The duration of the run in seconds
 		- avg_pace: The average pace of the run
 		- ascent: The total ascent during the run
+		- file_path: The file path of the original GPX file
 
 	:param database_file: The path to the database file (default is "runsData.db")
 	:return: A list of tuples, where each tuple contains the data for a single run
@@ -110,3 +111,20 @@ def queryData(database_file="runsData.db"):
 	connection.close()
 
 	return rows
+
+def resetTable(table_name="Runs", database_file="runsData.db"):
+
+	"""
+	Resets the inputted table in the database by dropping it and recreating it. This function is useful for testing purposes to ensure a clean state before running tests.
+
+	:param table_name: The name of the table to reset (default is "Runs")
+	:param database_file: The path to the database file (default is "runsData.db")
+	"""
+
+	connection = sql.connect(database_file)
+	cursor = connection.cursor()
+
+	cursor.execute(f'DROP TABLE IF EXISTS {table_name}')
+	connection.commit()
+
+	connection.close()

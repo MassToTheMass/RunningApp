@@ -34,8 +34,6 @@ class Track:
         self.avg_pace = self._computeAverageSpeed()
         self.ascent, self.descent = self._computeAscentDescent()
 
-        print(self.ascent, self.descent)
-
 
     def _computeDuration(self, gpxdata):
 

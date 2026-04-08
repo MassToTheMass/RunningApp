@@ -59,7 +59,7 @@ class Track:
         """
 
         start_time, end_time = gpxdata.get_time_bounds()
-        return (end_time - start_time)
+        return (end_time - start_time).total_seconds()
 
     def _computeAverageSpeed(self):
 
@@ -72,8 +72,7 @@ class Track:
         :return: The average speed in meters per second
         """
         
-        total_seconds = self.duration.total_seconds()
-        meters_per_second = self.total_distance / total_seconds
+        meters_per_second = self.total_distance / self.duration
 
         return meters_per_second
     

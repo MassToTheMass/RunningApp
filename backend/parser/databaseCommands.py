@@ -29,7 +29,6 @@ def createRunTable(database_file="runsData.db"):
 	connection.commit()
 	connection.close()
 
-
 def insertData(track, database_file="runsData.db"):
 
 	"""

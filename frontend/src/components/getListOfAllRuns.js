@@ -1,14 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 function GetListOfAllRuns({ runs }) {
     return (
-        <div>
+        <div class="runsContainer">
             <h1>List of All Runs</h1>
-            <ul>
-                {runs.map(run => (
-                    <li key={run.id}>{run.date} - {run.distance} km</li>
-                ))}
-            </ul>
+            {runs.map(run => (
+                <button class="sidebarbuttonrun" key={run.id}>{run.date} km</button>
+            ))}
         </div>
     )
 }

@@ -1,16 +1,26 @@
 import './App.css';
 
-import getListOfAllRuns from './components/getListOfAllRuns';
 import FileUpload from './components/fileUpload';
+import GetListOfAllRuns from './components/getListOfAllRuns';
 import React, { useEffect, useState} from 'react';
 
+import { useRuns } from './hooks/useRuns';
 
 function App() {
+  const { runs, fetchRuns } = useRuns();
+
   return (
     <div className="App">
-		<h1>Running App</h1>
-		<FileUpload />
-		<getListOfAllRuns />
+      <div class="container">
+        <div class="sidebar">
+          <h2>Running App</h2>
+            <FileUpload fetchRuns={fetchRuns} />
+            <GetListOfAllRuns runs={runs} />
+        </div>
+        <div class="content">
+          <h1>Running App</h1>
+        </div>
+      </div>
     </div>
   );
 }

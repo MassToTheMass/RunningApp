@@ -6,6 +6,8 @@ import os
 from parser.track import Track
 import parser.databaseCommands as db
 
+db.createRunTable("trackDataTest.db")
+db.clearTable("trackDataTest.db")
 app = Flask(__name__)
 CORS(app)
 
@@ -30,7 +32,7 @@ def upload_file():
 
     return jsonify({"message": "File uploaded successfully"})
 
-@app.route('/api/runs', methods=['GET'])
+@app.route('/api/runsFromLastWeek', methods=['GET'])
 def get_runs():
     runs_data = db.getRunsInLastWeek("trackDataTest.db")
 

@@ -1,9 +1,23 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
-function FileUpload() {
+function FileUpload({ fetchRuns }) {
     const [file, setFile] = useState(null);
-      
-    const handleUpload = async () => {
+    const fileInputRef = useRef(null);
+
+    const handleClick = () => {
+        fileInputRef.current.click();
+    };
+
+    const handleFileChange = (e) => {
+        const selectedFile = e.target.files[0];
+        setFile(selectedFile);
+
+      if (selectedFile) {
+          uploadFile(selectedFile);
+      }
+    };
+
+    const uploadFile = async (file) => {
     const formData = new FormData();
     formData.append('file', file);
 
@@ -12,16 +26,14 @@ function FileUpload() {
       body: formData,
     });
 
+      fetchRuns();
     alert('File uploaded successfully!');
   };
 
   return (
-    <div className="App">
-		<h1>Upload a Run</h1>
-
-		<input type="file" onChange={(e) => setFile(e.target.files[0])} />
-
-		<button onClick={handleUpload}>Upload</button>
+    <div>
+      <input type="file" ref={fileInputRef} style={{ display: "none" }} onChange={handleFileChange} />
+      <button className="sidebarbutton" onClick={handleClick}>Upload</button>
     </div>
   );
 }

@@ -12,6 +12,12 @@ CORS(app)
 UPLOAD_FOLDER = 'uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
+@app.route('/api/reset', methods=['POST'])
+def reset_database():
+    db.resetTable(database_file="trackDataTest.db")
+    db.createRunTable("trackDataTest.db")
+    return jsonify({"message": "Database reset successfully"})
+
 @app.route('/api/upload', methods=['POST'])
 def upload_file():
     file = request.files['file']
@@ -20,19 +26,28 @@ def upload_file():
     file.save(filepath)
 
     activity = Track(filepath)
-    
-    db.resetTable(database_file="trackDataTest.db")
-    db.createRunTable("trackDataTest.db")
     activity.save_track()
 
     return jsonify({"message": "File uploaded successfully"})
 
 @app.route('/api/runs', methods=['GET'])
 def get_runs():
+    runs_data = db.getRunsInLastWeek("trackDataTest.db")
+
+    print(runs_data)
 
     runs = []
-
-    db.queryData()
+    for run in runs_data:
+        run_dict = {
+            "id": run[0],
+            "date": run[1],
+            "total_distance": run[2],
+            "duration": run[3],
+            "avg_pace": run[4],
+            "ascent": run[5],
+            "file_path": run[6]
+        }
+        runs.append(run_dict)
 
     return jsonify(runs)
 

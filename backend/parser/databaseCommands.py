@@ -111,6 +111,28 @@ def queryData(database_file="runsData.db"):
 
 	return rows
 
+def getRunsInLastWeek(database_file="runsData.db"):
+
+	"""
+	Queries runs from the Runs table in the database that occurred within the last week. This function can be used to retrieve recent runs for display or analysis.
+
+	:param database_file: The path to the database file (default is "runsData.db")
+	:return: A list of tuples, where each tuple contains the data for a single run that occurred within the last week
+	"""
+
+	connection = sql.connect(database_file)
+	cursor = connection.cursor()
+
+	cursor.execute('''
+	SELECT * FROM Runs
+	WHERE date >= date('now', '-7 days')
+	''')
+	rows = cursor.fetchall()
+
+	connection.close()
+
+	return rows
+
 def resetTable(table_name="Runs", database_file="runsData.db"):
 
 	"""

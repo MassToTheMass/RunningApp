@@ -50,6 +50,9 @@ def createRunPointsTable(database_file="runsData.db"):
 				FOREIGN KEY (run_id) REFERENCES Runs(id)
 				)	
 			''')
+	
+	connection.commit()
+	connection.close()
 
 
 def insertData(track, database_file="runsData.db"):

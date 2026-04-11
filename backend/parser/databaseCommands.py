@@ -13,6 +13,7 @@ def createRunTable(database_file="runsData.db"):
 	"""
 
 	connection = sql.connect(database_file)
+	connection.execute("PRAGMA foreign_keys = ON;")
 	cursor = connection.cursor()
 	cursor.execute('''
 	CREATE TABLE IF NOT EXISTS Runs
@@ -28,6 +29,27 @@ def createRunTable(database_file="runsData.db"):
 
 	connection.commit()
 	connection.close()
+
+def createRunPointsTable(database_file="runsData.db"):
+
+	"""
+	
+	"""
+
+	connection = sql.connect(database_file)
+	connection.execute("PRAGMA foreign_keys = ON;")
+	cursor = connection.cursor()
+	cursor.execute('''
+	CREATE TABLE IF NOT EXISTS RunPoints
+				(id INTEGER PRIMARY KEY AUTOINCREMENT,
+				latitude REAL,
+				longitude REAL,
+				elevation REAL,
+				time TEXT,
+				cumulative_distance REAL,
+				FOREIGN KEY (run_id) REFERENCES Runs(id)
+				)	
+			''')
 
 
 def insertData(track, database_file="runsData.db"):
@@ -45,6 +67,7 @@ def insertData(track, database_file="runsData.db"):
 	"""
 
 	connection = sql.connect(database_file)
+	connection.execute("PRAGMA foreign_keys = ON;")
 	cursor = connection.cursor()
 
 	cursor.execute('''
@@ -64,6 +87,7 @@ def deleteData(run_id, database_file="runsData.db"):
 	"""
 
 	connection = sql.connect(database_file)
+	connection.execute("PRAGMA foreign_keys = ON;")
 	cursor = connection.cursor()
 
 	cursor.execute('DELETE FROM Runs WHERE id = ?', (run_id,))
@@ -79,6 +103,7 @@ def clearTable(database_file="runsData.db"):
 	"""
 
 	connection = sql.connect(database_file)
+	connection.execute("PRAGMA foreign_keys = ON;")
 	cursor = connection.cursor()
 
 	cursor.execute('DELETE FROM Runs')
@@ -103,6 +128,7 @@ def queryData(database_file="runsData.db"):
 	"""
 
 	connection = sql.connect(database_file)
+	connection.execute("PRAGMA foreign_keys = ON;")
 	cursor = connection.cursor()
 
 	cursor.execute('SELECT * FROM Runs')
@@ -122,6 +148,7 @@ def resetTable(table_name="Runs", database_file="runsData.db"):
 	"""
 
 	connection = sql.connect(database_file)
+	connection.execute("PRAGMA foreign_keys = ON;")
 	cursor = connection.cursor()
 
 	cursor.execute(f'DROP TABLE IF EXISTS {table_name}')

@@ -1,7 +1,7 @@
 import './App.css';
 
 import FileUpload from './components/fileUpload';
-import GetListOfAllRuns from './components/getListOfAllRuns';
+import GetListOfAllRuns from './components/getListOfTenRecentRuns';
 import React, { useEffect, useState} from 'react';
 
 import { useRuns } from './hooks/useRuns';

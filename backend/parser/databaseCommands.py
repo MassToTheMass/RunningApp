@@ -111,10 +111,10 @@ def queryData(database_file="runsData.db"):
 
 	return rows
 
-def getRunsInLastWeek(database_file="runsData.db"):
+def getRunsRecentTen(database_file="runsData.db"):
 
 	"""
-	Queries runs from the Runs table in the database that occurred within the last week. This function can be used to retrieve recent runs for display or analysis.
+	Queries the ten most recent runs from the Runs table in the database.
 
 	:param database_file: The path to the database file (default is "runsData.db")
 	:return: A list of tuples, where each tuple contains the data for a single run that occurred within the last week
@@ -125,7 +125,8 @@ def getRunsInLastWeek(database_file="runsData.db"):
 
 	cursor.execute('''
 	SELECT * FROM Runs
-	WHERE date >= date('now', '-7 days')
+	ORDER BY date DESC
+	LIMIT 10
 	''')
 	rows = cursor.fetchall()
 

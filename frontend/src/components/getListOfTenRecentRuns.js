@@ -1,9 +1,9 @@
 import React from 'react';
 
-function GetListOfAllRuns({ runs }) {
+function GetListOfTenRecentRuns({ runs }) {
     return (
         <div class="runsContainer">
-            <h1>List of All Runs</h1>
+            <h1>Recent Runs</h1>
             {runs.map(run => (
                 <button class="sidebarbuttonrun" key={run.id}>{run.date} km</button>
             ))}
@@ -11,4 +11,4 @@ function GetListOfAllRuns({ runs }) {
     )
 }
 
-export default GetListOfAllRuns;
+export default GetListOfTenRecentRuns;

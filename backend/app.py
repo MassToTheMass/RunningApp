@@ -32,9 +32,9 @@ def upload_file():
 
     return jsonify({"message": "File uploaded successfully"})
 
-@app.route('/api/runsFromLastWeek', methods=['GET'])
+@app.route('/api/runsRecentTen', methods=['GET'])
 def get_runs():
-    runs_data = db.getRunsInLastWeek("trackDataTest.db")
+    runs_data = db.getRunsRecentTen("trackDataTest.db")
 
     print(runs_data)
 

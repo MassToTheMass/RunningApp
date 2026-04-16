@@ -141,6 +141,29 @@ def queryData(database_file="runsData.db"):
 
 	return rows
 
+def getRunsRecentTen(database_file="runsData.db"):
+
+	"""
+	Queries the ten most recent runs from the Runs table in the database.
+
+	:param database_file: The path to the database file (default is "runsData.db")
+	:return: A list of tuples, where each tuple contains the data for a single run that occurred within the last week
+	"""
+
+	connection = sql.connect(database_file)
+	cursor = connection.cursor()
+
+	cursor.execute('''
+	SELECT * FROM Runs
+	ORDER BY date DESC
+	LIMIT 10
+	''')
+	rows = cursor.fetchall()
+
+	connection.close()
+
+	return rows
+
 def resetTable(table_name="Runs", database_file="runsData.db"):
 
 	"""

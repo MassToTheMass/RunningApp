@@ -151,6 +151,7 @@ def getRunsRecentTen(database_file="runsData.db"):
 	"""
 
 	connection = sql.connect(database_file)
+	connection.execute("PRAGMA foreign_keys = ON;")
 	cursor = connection.cursor()
 
 	cursor.execute('''

@@ -5,7 +5,10 @@ function GetListOfTenRecentRuns({ runs }) {
         <div class="runsContainer">
             <h1>Recent Runs</h1>
             {runs.map(run => (
-                <button class="sidebarbuttonrun" key={run.id}>{run.date} km</button>
+                <button class="sidebarbuttonrun" key={run.id}>{new Date(run.date).toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric'
+                })} km</button>
             ))}
         </div>
     )

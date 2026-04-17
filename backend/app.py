@@ -53,11 +53,5 @@ def get_runs():
 
     return jsonify(runs)
 
-@app.route('/api/reset', methods=['POST'])
-def reset_database():
-    db.resetTable(database_file="trackDataTest.db")
-    db.createRunTable("trackDataTest.db")
-    return jsonify({"message": "Database reset successfully"})
-
 if __name__ == '__main__':
     app.run(port=5000)

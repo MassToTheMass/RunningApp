@@ -12,3 +12,8 @@ export const uploadGPXFile = async (formData) => {
         body: formData,
     });
 }
+
+export const getBriefDataFromRunID = async (runID) => {
+    const response = await fetch(`http://localhost:5000/api/getBriefDataFromRunID?runID=${runID}`);
+    return response.json();
+}

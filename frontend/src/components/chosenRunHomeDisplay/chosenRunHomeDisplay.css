@@ -1,0 +1,7 @@
+.chosenRunHomeDisplayActivitySummaryBox {
+	display: flex;
+}
+
+.chosenRunHomeDisplayActivitySummaryBoxElement {
+	margin: 10px;
+}

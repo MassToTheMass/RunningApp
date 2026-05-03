@@ -37,6 +37,7 @@ def get_runs():
     runs_data = db.getRunsRecentTen("trackDataTest.db")
 
     print(runs_data)
+    print("something runnnnnnnnnnnnnnnnns")
 
     runs = []
     for run in runs_data:
@@ -52,6 +53,30 @@ def get_runs():
         runs.append(run_dict)
 
     return jsonify(runs)
+
+@app.route('/api/getBriefDataFromRunID', methods=['GET'])
+def getBriefDataFromRunID():
+    print("before run ID there is thissssssssssssssssssssssssssssss")
+    runID = request.args.get("runID")
+    print(runID)
+    run_data = db.queryBriefRunID(runID, database_file='trackDataTest.db')
+    print(run_data)
+
+    run_data = run_data[0]
+
+    run_dict = {
+        "id": run_data[0],
+        "date": run_data[1],
+        "total_distance": run_data[2],
+        "duration": run_data[3],
+        "avg_pace": run_data[4],
+        "ascent": run_data[5],
+        "file_path": run_data[6]
+    }
+
+    print(run_dict)
+
+    return jsonify(run_dict)
 
 if __name__ == '__main__':
     app.run(port=5000)

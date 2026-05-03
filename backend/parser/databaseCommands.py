@@ -141,6 +141,23 @@ def queryData(database_file="runsData.db"):
 
 	return rows
 
+def queryBriefRunID(run_id, database_file="runsData.db"):
+
+	connection = sql.connect(database_file)
+	connection.execute("PRAGMA foreign_keys = ON;")
+	cursor = connection.cursor()
+
+	cursor.execute(f'''
+				SELECT * FROM Runs
+				WHERE id = {run_id}
+		''')
+	
+	rows = cursor.fetchall()
+
+	connection.close()
+
+	return rows
+
 def getRunsRecentTen(database_file="runsData.db"):
 
 	"""

@@ -4,6 +4,7 @@
 
 .sidebar {
   width: 250px;
+  height: 100vh;
   background-color: #1F3B4D;
   padding: 20px;
 }
@@ -11,25 +12,6 @@
 .content {
   flex-grow: 1;
   padding: 20px;
-}
-
-.sidebarbutton {
-  display: block;
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  background-color: rgb(38, 194, 214);
-  border: none;
-  cursor: pointer;
-  border-radius: 12px;
-}
-
-.sidebarbutton:hover {
-  background-color: #21a1c1;
-}
-
-.sidebarbutton:active {
-  background-color: #1b8bb8;
 }
 
 .runsContainer {

@@ -7,9 +7,15 @@ function ChosenRunHomeDisplay({ runID }) {
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
+		if (runID == null) {
+			return;
+		}
+
+		setLoading(true);
+
 		async function load() {
 			try {
-				setRunData(await getBriefDataFromRunID(runID.runID));
+				setRunData(await getBriefDataFromRunID(runID));
 			} catch (error) {
 				console.log(error);
 			} finally {
@@ -18,7 +24,7 @@ function ChosenRunHomeDisplay({ runID }) {
 		}
 
 		load();
-	}, [])
+	}, [runID]);
 
 	console.log(runData);
 

@@ -1,9 +1,8 @@
 import './App.css';
 
-import FileUpload from './components/fileUpload';
-import GetListOfTenRecentRuns from './components/homeSideBar/getListOfTenRecentRuns';
+import HomeSideBar from './components/homeSideBar/homeSideBar';
 import HomeDisplay from './components/homeDisplay';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { useRuns } from './hooks/useRuns';
 
@@ -15,9 +14,7 @@ function App() {
     <div className="App">
       <div className="container">
         <div className="sidebar">
-          <h2>Running App</h2>
-          <FileUpload fetchRuns={fetchRuns} />
-          <GetListOfTenRecentRuns runs={runs} onSelectRun={setSelectedRunID} />
+          <HomeSideBar runs={runs} onSelectRun={setSelectedRunID} fetchRuns={fetchRuns} />
         </div>
         <div className="content">
           <h1>Running App</h1>

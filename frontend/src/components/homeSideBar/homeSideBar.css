@@ -1,0 +1,37 @@
+.sidebarbuttonrun {
+  display: block;
+  width: 80%;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: rgb(38, 194, 214);
+  border: none;
+  cursor: pointer;
+  border-radius: 18px;
+}
+
+.sidebarbuttonrun:hover {
+  background-color: #21a1c1;
+}
+
+.sidebarbuttonrun:active {
+  background-color: #1b8bb8;
+}
+
+.sidebarbutton {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: rgb(38, 194, 214);
+  border: none;
+  cursor: pointer;
+  border-radius: 12px;
+}
+
+.sidebarbutton:hover {
+  background-color: #21a1c1;
+}
+
+.sidebarbutton:active {
+  background-color: #1b8bb8;
+}

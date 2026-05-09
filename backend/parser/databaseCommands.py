@@ -41,13 +41,15 @@ def createRunPointsTable(database_file="runsData.db"):
 	cursor = connection.cursor()
 	cursor.execute('''
 	CREATE TABLE IF NOT EXISTS RunPoints
-				(id INTEGER PRIMARY KEY AUTOINCREMENT,
+				(run_id INTEGER NOT NULL,
+				point_index INTEGER NOT NULL,
 				latitude REAL,
 				longitude REAL,
 				elevation REAL,
 				time TEXT,
 				cumulative_distance REAL,
-				FOREIGN KEY (run_id) REFERENCES Runs(id)
+				FOREIGN KEY (run_id) REFERENCES Runs(id),
+				PRIMARY KEY (run_id, point_index)
 				)	
 			''')
 	
@@ -77,6 +79,14 @@ def insertData(track, database_file="runsData.db"):
 	INSERT INTO Runs (date, total_distance, duration, avg_pace, ascent, file_path)
 	VALUES (?, ?, ?, ?, ?, ?)
 	''', (track.date, track.total_distance, track.duration, track.avg_pace, track.ascent, track.file_path))
+
+	run_id = cursor.lastrowid
+
+	for i in range(len(track.lat)):
+		cursor.execute('''
+		INSERT INTO RunPoints (run_id, point_index, latitude, longitude, elevation, time, cumulative_distance)
+		VALUES (?, ?, ?, ?, ?, ?, ?)
+		''', (run_id, i, float(track.lat[i]), float(track.lon[i]), float(track.elev[i]), str(track.time[i]), float(track.cumulative_distance[i])))
 
 	connection.commit()
 	connection.close()
@@ -109,6 +119,7 @@ def clearTable(database_file="runsData.db"):
 	connection.execute("PRAGMA foreign_keys = ON;")
 	cursor = connection.cursor()
 
+	cursor.execute('DELETE FROM RunPoints')
 	cursor.execute('DELETE FROM Runs')
 
 	connection.commit()
@@ -150,6 +161,23 @@ def queryBriefRunID(run_id, database_file="runsData.db"):
 	cursor.execute(f'''
 				SELECT * FROM Runs
 				WHERE id = {run_id}
+		''')
+	
+	rows = cursor.fetchall()
+
+	connection.close()
+
+	return rows
+
+def queryRunDataPointsFromRunID(run_id, database_file="runsData.db"):
+
+	connection = sql.connect(database_file)
+	connection.execute("PRAGMA foreign_keys = ON;")
+	cursor = connection.cursor()
+
+	cursor.execute(f'''
+				SELECT point_index, latitude, longitude, elevation, time FROM RunPoints
+				WHERE run_id = {run_id}
 		''')
 	
 	rows = cursor.fetchall()

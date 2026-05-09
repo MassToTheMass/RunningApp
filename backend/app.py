@@ -6,7 +6,11 @@ import os
 from parser.track import Track
 import parser.databaseCommands as db
 
+db.resetTable(database_file="trackDataTest.db")
+db.resetTable(table_name="RunPoints", database_file="trackDataTest.db")
+
 db.createRunTable("trackDataTest.db")
+db.createRunPointsTable("trackDataTest.db")
 db.clearTable("trackDataTest.db")
 app = Flask(__name__)
 CORS(app)
@@ -18,6 +22,8 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 def reset_database():
     db.resetTable(database_file="trackDataTest.db")
     db.createRunTable("trackDataTest.db")
+    db.createRunPointsTable("trackDataTest.db")
+
     return jsonify({"message": "Database reset successfully"})
 
 @app.route('/api/upload', methods=['POST'])
@@ -36,9 +42,6 @@ def upload_file():
 def get_runs():
     runs_data = db.getRunsRecentTen("trackDataTest.db")
 
-    print(runs_data)
-    print("something runnnnnnnnnnnnnnnnns")
-
     runs = []
     for run in runs_data:
         run_dict = {
@@ -56,11 +59,8 @@ def get_runs():
 
 @app.route('/api/getBriefDataFromRunID', methods=['GET'])
 def getBriefDataFromRunID():
-    print("before run ID there is thissssssssssssssssssssssssssssss")
     runID = request.args.get("runID")
-    print(runID)
     run_data = db.queryBriefRunID(runID, database_file='trackDataTest.db')
-    print(run_data)
 
     run_data = run_data[0]
 
@@ -74,9 +74,26 @@ def getBriefDataFromRunID():
         "file_path": run_data[6]
     }
 
-    print(run_dict)
-
     return jsonify(run_dict)
+
+@app.route('/api/getRunDataPoints', methods=['GET'])
+def getRunDataPoints():
+    runID = request.args.get("runID")
+    run_data_points = db.queryRunDataPointsFromRunID(runID, database_file='trackDataTest.db')
+
+    data_point_dict = {}
+    for data_point in run_data_points:
+        data_point_dict[data_point[0]] = {
+            "lat": data_point[1],
+            "lon": data_point[2],
+            "elevation": data_point[3],
+            "timestamp": data_point[4].decode('utf-8') if isinstance(data_point[4], bytes) else str(data_point[4])
+        }
+
+    print("Data point dict:\n\n")
+    print(data_point_dict)
+
+    return jsonify(data_point_dict)
 
 if __name__ == '__main__':
     app.run(port=5000)

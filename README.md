@@ -39,6 +39,7 @@ The project is currently a work in progress, with core data processing and stora
 - Python
 - SQLite
 - GPX parsing (XML processing)
+- React
 
 ---
 
